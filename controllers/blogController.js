@@ -57,14 +57,15 @@ const calculateReadingTime = (text) => {
 
 const getAllBlogs = async (req, res) => {
   try {
-    const user_id = req.user_id;
-    console.log(user_id, "USERIDDDD");
+    // const user_id = req.user_id;
+    // console.log(user_id, "USERIDDDD");
 
     // Get page and limit from query string
     let page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 20; // Set default limit
 
-    const totalBlogs = await blogModel.countDocuments({ user_id });
+    // const totalBlogs = await blogModel.countDocuments({ user_id });
+    const totalBlogs = await blogModel.countDocuments({});
 
     const totalPages = Math.ceil(totalBlogs / limit);
 
@@ -78,7 +79,8 @@ const getAllBlogs = async (req, res) => {
     const skip = (page - 1) * limit;
 
     // Fetch blogs based on pagination parameters
-    const blogs = await blogModel.find({ user_id }).skip(skip).limit(limit);
+    // const blogs = await blogModel.find({ user_id }).skip(skip).limit(limit);
+    const blogs = await blogModel.find({}).skip(skip).limit(limit);
 
     for (let i = 0; i < blogs.length; i++) {
       const blog = blogs[i];
@@ -94,7 +96,7 @@ const getAllBlogs = async (req, res) => {
     }
 
     res.json({
-      user_id: user_id,
+      // user_id: user_id,
       totalPages: totalPages,
       page: page,
       totalBlogs: totalBlogs,
